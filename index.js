@@ -1,10 +1,17 @@
 const express = require("express");
+const axios = require("axios");
 
 const app = express();
 const port = 3000;
 
-app.get("/api/hello", (req, res) => {
-  res.json({ message: "Hello, World!" });
+app.get("/api/get-country", async (req, res) => {
+  try {
+    const response = await axios.get("https://api.first.org/data/v1/countries");
+    const countries = response.data.data;
+    res.json({ countries });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 app.listen(port, () => {
